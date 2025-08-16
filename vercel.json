@@ -1,20 +1,15 @@
 {
   "version": 2,
-  "functions": {
-    "dist/index.js": {
-      "includeFiles": "prisma/**"
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/node"
     }
-  },
+  ],
   "routes": [
     {
       "src": "/(.*)",
       "dest": "dist/index.js"
     }
-  ],
-  "env": {
-    "DATABASE_URL": "file:./dev.db",
-    "JWT_SECRET": "your-super-secret-jwt-key-change-this-in-production",
-    "PORT": "3001",
-    "UPLOAD_DIR": "uploads"
-  }
+  ]
 }
