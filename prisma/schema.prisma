@@ -1,0 +1,80 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Admin {
+  id       Int    @id @default(autoincrement())
+  name     String
+  email    String @unique
+  password String
+
+  // Relations
+  users User[]
+
+  @@map("admins")
+}
+
+model User {
+  id       Int    @id @default(autoincrement())
+  adminId  Int    @map("admin_id")
+  name     String
+  email    String @unique
+  password String
+
+  // Relations
+  admin            Admin             @relation(fields: [adminId], references: [id])
+  attendances      Attendance[]
+  monthlyReports   MonthlyReport[]
+
+  @@map("users")
+}
+
+model Attendance {
+  id          Int       @id @default(autoincrement())
+  userId      Int       @map("user_id")
+  checkIn     DateTime  @map("check_in")
+  checkOut    DateTime? @map("check_out")
+  hoursWorked Float?    @map("hours_worked")
+  sickNote    String?   @map("sick_note")
+  sickDocument String?  @map("sick_document")
+
+  // Relations
+  user User @relation(fields: [userId], references: [id])
+  breaks Break[]
+
+  @@map("attendance")
+}
+
+model Break {
+  id           Int       @id @default(autoincrement())
+  attendanceId Int       @map("attendance_id")
+  startTime    DateTime  @map("start_time")
+  endTime      DateTime? @map("end_time")
+  duration     Float?    @map("duration") // in hours
+  reason       String?   @map("reason")
+
+  // Relations
+  attendance Attendance @relation(fields: [attendanceId], references: [id])
+
+  @@map("breaks")
+}
+
+model MonthlyReport {
+  id         Int    @id @default(autoincrement())
+  userId     Int    @map("user_id")
+  month      String
+  totalHours Float  @map("total_hours")
+
+  // Relations
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("monthly_reports")
+}
