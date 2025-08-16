@@ -22,7 +22,19 @@ if (!fs.existsSync(uploadsDir)) {
 }
 
 // Middleware
-app.use(cors())
+app.use(cors({
+  origin: [
+    'http://localhost:3000',
+    'https://smart-pointage-frontend.windsurf.build',
+    'https://frontend-c8x64fm49-mokttarbenhatta-gmailcoms-projects.vercel.app',
+    /\.vercel\.app$/,
+    /\.netlify\.app$/,
+    /\.windsurf\.build$/
+  ],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
