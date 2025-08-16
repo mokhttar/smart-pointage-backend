@@ -1,11 +1,10 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "dist/index.js",
-      "use": "@vercel/node"
+  "functions": {
+    "dist/index.js": {
+      "includeFiles": "prisma/**"
     }
-  ],
+  },
   "routes": [
     {
       "src": "/(.*)",
@@ -17,10 +16,5 @@
     "JWT_SECRET": "your-super-secret-jwt-key-change-this-in-production",
     "PORT": "3001",
     "UPLOAD_DIR": "uploads"
-  },
-  "functions": {
-    "dist/index.js": {
-      "includeFiles": "prisma/**"
-    }
   }
 }
